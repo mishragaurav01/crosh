@@ -1,0 +1,16 @@
+# Normalize text files
+* text=auto
+
+# Keep shell scripts with Unix line endings
+*.sh text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+
+# Source code
+*.ts text
+*.js text
+*.json text
+*.md text
+*.yml text
+*.yaml text
