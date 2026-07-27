@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import { logger } from '../../shared/logger/index.js';
 
 // Express strictly identifies error middlewares by their 4-arity signature
 export const globalErrorHandler = (
@@ -7,7 +8,7 @@ export const globalErrorHandler = (
   res: Response,
   _next: NextFunction,
 ): void => {
-  console.error(err);
+  logger.error(err);
 
   res.status(500).json({
     success: false,
