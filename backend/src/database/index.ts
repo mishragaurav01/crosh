@@ -9,6 +9,6 @@ export const connectDatabase = async (): Promise<void> => {
     logger.info('Successful connection.');
   } catch (error) {
     logger.error('Failed connection.', error);
-    process.exit(1);
+    throw error;
   }
 };
