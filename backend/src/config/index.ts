@@ -12,6 +12,8 @@ const envSchema = z.object({
     .default('development'),
   PORT: z.coerce.number().default(3000),
   MONGODB_URI: z.string().url(),
+  JWT_SECRET: z.string().min(16),
+  JWT_EXPIRES_IN: z.string().default('15m'),
 });
 
 // Validate process.env against schema
@@ -27,4 +29,6 @@ export const config = Object.freeze({
   nodeEnv: parseResult.data.NODE_ENV,
   port: parseResult.data.PORT,
   mongoUri: parseResult.data.MONGODB_URI,
+  jwtSecret: parseResult.data.JWT_SECRET,
+  jwtExpiresIn: parseResult.data.JWT_EXPIRES_IN,
 });
