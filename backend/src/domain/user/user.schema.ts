@@ -27,6 +27,15 @@ export const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    roles: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Role',
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,
