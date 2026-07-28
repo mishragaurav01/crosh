@@ -64,4 +64,36 @@ export class UserRepository {
       })
       .exec();
   }
+
+  async findProfile(userId: string): Promise<UserDocument | null> {
+    return UserModel.findById(userId)
+      .select('-password -__v')
+      .populate('roles')
+      .exec();
+  }
+
+  async updateProfile(
+    userId: string,
+    profileData: { firstName?: string; lastName?: string },
+  ): Promise<UserDocument | null> {
+    return UserModel.findByIdAndUpdate(
+      userId,
+      { $set: profileData },
+      { new: true },
+    )
+      .select('-password -__v')
+      .populate('roles')
+      .exec();
+  }
+
+  async changePassword(
+    userId: string,
+    newPasswordHash: string,
+  ): Promise<UserDocument | null> {
+    return UserModel.findByIdAndUpdate(
+      userId,
+      { $set: { password: newPasswordHash } },
+      { new: true },
+    ).exec();
+  }
 }
