@@ -14,6 +14,8 @@ const envSchema = z.object({
   MONGODB_URI: z.string().url(),
   JWT_SECRET: z.string().min(16),
   JWT_EXPIRES_IN: z.string().default('15m'),
+  JWT_REFRESH_SECRET: z.string().min(16),
+  JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
 });
 
 // Validate process.env against schema
@@ -31,4 +33,6 @@ export const config = Object.freeze({
   mongoUri: parseResult.data.MONGODB_URI,
   jwtSecret: parseResult.data.JWT_SECRET,
   jwtExpiresIn: parseResult.data.JWT_EXPIRES_IN,
+  jwtRefreshSecret: parseResult.data.JWT_REFRESH_SECRET,
+  jwtRefreshExpiresIn: parseResult.data.JWT_REFRESH_EXPIRES_IN,
 });
