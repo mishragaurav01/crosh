@@ -25,4 +25,30 @@ export class UserRepository {
   async delete(id: string): Promise<UserDocument | null> {
     return UserModel.findByIdAndDelete(id).exec();
   }
+
+  async assignRole(
+    userId: string,
+    roleId: string,
+  ): Promise<UserDocument | null> {
+    return UserModel.findByIdAndUpdate(
+      userId,
+      { $addToSet: { roles: roleId } },
+      { new: true },
+    ).exec();
+  }
+
+  async removeRole(
+    userId: string,
+    roleId: string,
+  ): Promise<UserDocument | null> {
+    return UserModel.findByIdAndUpdate(
+      userId,
+      { $pull: { roles: roleId } },
+      { new: true },
+    ).exec();
+  }
+
+  async findWithRoles(userId: string): Promise<UserDocument | null> {
+    return UserModel.findById(userId).populate('roles').exec();
+  }
 }
