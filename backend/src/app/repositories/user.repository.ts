@@ -51,4 +51,17 @@ export class UserRepository {
   async findWithRoles(userId: string): Promise<UserDocument | null> {
     return UserModel.findById(userId).populate('roles').exec();
   }
+
+  async findUserAuthorizationContext(
+    userId: string,
+  ): Promise<UserDocument | null> {
+    return UserModel.findById(userId)
+      .populate({
+        path: 'roles',
+        populate: {
+          path: 'permissions',
+        },
+      })
+      .exec();
+  }
 }
