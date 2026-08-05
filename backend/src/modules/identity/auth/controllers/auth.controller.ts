@@ -152,10 +152,20 @@ export class AuthController {
       const token =
         await requestPasswordResetService.requestPasswordReset(email);
 
+      // Secure out-of-band delivery: Dispatch simulated email instead of returning it in the HTTP response
+      // Do not wait for email dispatch to complete to prevent timing-based email enumeration attacks.
+      import('../../../../shared/services/email.service.js').then(
+        ({ EmailService }) => {
+          EmailService.sendPasswordResetEmail(email, token).catch((e) =>
+            console.error(e),
+          );
+        },
+      );
+
       res.status(200).json({
         success: true,
-        message: 'Password reset requested successfully',
-        data: { resetToken: token }, // Typically token is sent via email, but as requested (no email sending), we return it here for functionality.
+        message:
+          'If the email exists, a password reset link has been dispatched securely.',
       });
     } catch (error) {
       next(error);

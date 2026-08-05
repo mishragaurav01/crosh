@@ -24,7 +24,7 @@ export const logout = async (): Promise<{ success: boolean }> => {
     return response.data;
 };
 
-export const forgotPassword = async (data: ForgotPasswordFormData): Promise<{ success: boolean; message: string; data?: { resetToken: string } }> => {
+export const forgotPassword = async (data: ForgotPasswordFormData): Promise<{ success: boolean; message: string }> => {
     const response = await apiClient.post('/auth/forgot-password', data);
     return response.data;
 };

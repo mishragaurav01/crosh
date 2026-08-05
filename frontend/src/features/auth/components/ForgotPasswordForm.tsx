@@ -21,12 +21,8 @@ export function ForgotPasswordForm() {
 
     const { mutate, isPending } = useMutation({
         mutationFn: forgotPassword,
-        onSuccess: (data) => {
-            toast.success('Reset logic executed. (Check logs/token in real app)');
-            // In this specific mock environment, we redirect to reset-password and pass token in query to help testing
-            if (data.data?.resetToken) {
-                router.push(`/reset-password?token=${data.data.resetToken}`);
-            }
+        onSuccess: () => {
+            toast.success('If the email exists, a password reset link has been dispatched securely. Check the backend server terminal for the simulated Email output!');
         },
         onError: (error: any) => {
             toast.error(error?.response?.data?.message || 'Failed to request reset');
