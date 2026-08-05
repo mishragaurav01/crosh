@@ -49,6 +49,13 @@ export class RegisterService {
       throw new Error('Failed to output assigned role for user');
     }
 
+    // Explicitly populate for correct formatting
+    await assignedUser.populate('roles');
+
+    if (!assignedUser) {
+      throw new Error('Failed to output assigned role for user');
+    }
+
     return RegisterMapper.toResponse(assignedUser);
   }
 }
