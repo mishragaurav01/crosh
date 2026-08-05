@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ProductController } from '../controllers/product.controller.js';
 import { validateRequest } from '../../../../app/middlewares/validate.middleware.js';
 import { authenticate } from '../../../../app/middlewares/auth/authenticate.js';
-import { authorize } from '../../../../app/middlewares/auth/authorize.js';
+import { requireRole } from '../../../../app/middlewares/auth/require-role.js';
 import {
     createProductSchema,
     updateProductSchema,
@@ -87,7 +87,7 @@ productRoutes.get('/slug/:slug', validateRequest(productSlugSchema), ProductCont
  *       201:
  *         description: Product created
  */
-productRoutes.post('/', authenticate, authorize('Admin'), validateRequest(createProductSchema), ProductController.create);
+productRoutes.post('/', authenticate, requireRole('Admin'), validateRequest(createProductSchema), ProductController.create);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ productRoutes.post('/', authenticate, authorize('Admin'), validateRequest(create
  *       200:
  *         description: Product updated
  */
-productRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest(updateProductSchema), ProductController.update);
+productRoutes.patch('/:id', authenticate, requireRole('Admin'), validateRequest(updateProductSchema), ProductController.update);
 
 /**
  * @swagger
@@ -138,6 +138,6 @@ productRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest(up
  *       200:
  *         description: Product archived
  */
-productRoutes.delete('/:id', authenticate, authorize('Admin'), validateRequest(productIdSchema), ProductController.delete);
+productRoutes.delete('/:id', authenticate, requireRole('Admin'), validateRequest(productIdSchema), ProductController.delete);
 
 export { productRoutes };

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { Mocked } from 'vitest';
 import { CategoryService } from '../../application/category/category.service.js';
 import { CategoryRepository } from '../../app/repositories/category.repository.js';
 import { ConflictError, NotFoundError } from '../../shared/errors/index.js';
@@ -7,11 +9,11 @@ vi.mock('../../app/repositories/category.repository.js');
 
 describe('CategoryService', () => {
     let service: CategoryService;
-    let mockRepo: vi.Mocked<CategoryRepository>;
+    let mockRepo: Mocked<CategoryRepository>;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        mockRepo = new CategoryRepository() as vi.Mocked<CategoryRepository>;
+        mockRepo = new CategoryRepository() as Mocked<CategoryRepository>;
         service = new CategoryService();
         (service as any).repository = mockRepo;
     });

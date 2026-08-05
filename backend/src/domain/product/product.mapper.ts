@@ -1,24 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ProductDocument, ProductResponse } from './product.types.js';
 
 export class ProductMapper {
     static toResponse(doc: ProductDocument): ProductResponse {
-        let categoryMap = doc.category;
+        let categoryMap: any = doc.category;
         if (doc.category && typeof doc.category === 'object' && '_id' in doc.category) {
+            const cat = doc.category as any;
             categoryMap = {
-                id: doc.category._id.toString(),
-                name: doc.category.name,
-                slug: doc.category.slug
+                id: cat._id.toString(),
+                name: cat.name,
+                slug: cat.slug
             };
         } else if (doc.category) {
             categoryMap = doc.category.toString();
         }
 
-        let collectionMap = doc.collectionAssigned;
+        let collectionMap: any = doc.collectionAssigned;
         if (doc.collectionAssigned && typeof doc.collectionAssigned === 'object' && '_id' in doc.collectionAssigned) {
+            const col = doc.collectionAssigned as any;
             collectionMap = {
-                id: doc.collectionAssigned._id.toString(),
-                name: doc.collectionAssigned.name,
-                slug: doc.collectionAssigned.slug
+                id: col._id.toString(),
+                name: col.name,
+                slug: col.slug
             };
         } else if (doc.collectionAssigned) {
             collectionMap = doc.collectionAssigned.toString();

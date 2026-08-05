@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { CollectionController } from '../controllers/collection.controller.js';
 import { validateRequest } from '../../../../app/middlewares/validate.middleware.js';
 import { authenticate } from '../../../../app/middlewares/auth/authenticate.js';
-import { authorize } from '../../../../app/middlewares/auth/authorize.js';
+import { requireRole } from '../../../../app/middlewares/auth/require-role.js';
 import {
     createCollectionSchema,
     updateCollectionSchema,
@@ -68,7 +68,7 @@ collectionRoutes.get('/:id', validateRequest(collectionIdSchema), CollectionCont
  *       201:
  *         description: Collection created
  */
-collectionRoutes.post('/', authenticate, authorize('Admin'), validateRequest(createCollectionSchema), CollectionController.create);
+collectionRoutes.post('/', authenticate, requireRole('Admin'), validateRequest(createCollectionSchema), CollectionController.create);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ collectionRoutes.post('/', authenticate, authorize('Admin'), validateRequest(cre
  *       200:
  *         description: Collection updated
  */
-collectionRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest(updateCollectionSchema), CollectionController.update);
+collectionRoutes.patch('/:id', authenticate, requireRole('Admin'), validateRequest(updateCollectionSchema), CollectionController.update);
 
 /**
  * @swagger
@@ -119,6 +119,6 @@ collectionRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest
  *       200:
  *         description: Collection deleted
  */
-collectionRoutes.delete('/:id', authenticate, authorize('Admin'), validateRequest(collectionIdSchema), CollectionController.delete);
+collectionRoutes.delete('/:id', authenticate, requireRole('Admin'), validateRequest(collectionIdSchema), CollectionController.delete);
 
 export { collectionRoutes };
