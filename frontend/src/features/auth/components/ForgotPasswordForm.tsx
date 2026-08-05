@@ -22,7 +22,7 @@ export function ForgotPasswordForm() {
     const { mutate, isPending } = useMutation({
         mutationFn: forgotPassword,
         onSuccess: () => {
-            toast.success('If the email exists, a password reset link has been dispatched securely. Check the backend server terminal for the simulated Email output!');
+            toast.success('If an account exists with this email, a password reset link has been dispatched.');
         },
         onError: (error: any) => {
             toast.error(error?.response?.data?.message || 'Failed to request reset');
