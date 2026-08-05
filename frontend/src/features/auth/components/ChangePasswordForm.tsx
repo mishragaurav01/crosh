@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -58,7 +58,7 @@ export function ChangePasswordForm() {
                         <FormItem>
                             <FormLabel>New Password</FormLabel>
                             <FormControl>
-                                <PasswordInput placeholder="Enter new password" {...field} />
+                                <PasswordInput placeholder="Enter new password" showStrength {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

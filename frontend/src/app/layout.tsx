@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 import { RootProvider } from "@/providers";
 import { Toaster } from "@/components/ui/sonner";
 
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,10 +33,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <RootProvider>
-          {children}
-          <Toaster />
-        </RootProvider>
+        <ErrorBoundary>
+          <RootProvider>
+            {children}
+            <Toaster />
+          </RootProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

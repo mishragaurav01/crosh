@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -88,7 +88,7 @@ export function RegisterForm() {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <PasswordInput placeholder="Create a password" {...field} />
+                                <PasswordInput placeholder="Create a password" showStrength {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
