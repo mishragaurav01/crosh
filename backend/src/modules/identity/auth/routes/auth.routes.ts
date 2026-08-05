@@ -100,12 +100,7 @@ authRoutes.post('/login', validateRequest(loginSchema), AuthController.login);
  *       401:
  *         description: Unauthorized
  */
-authRoutes.post(
-  '/logout',
-  authenticate,
-  validateRequest(logoutSchema),
-  AuthController.logout,
-);
+authRoutes.post('/logout', authenticate, AuthController.logout);
 
 /**
  * @swagger

@@ -10,6 +10,6 @@ export interface RegisterResponse {
   firstName: string;
   lastName: string;
   email: string;
-  roles: string[];
+  roles: { id: string; name: string }[];
   createdAt: Date;
 }
