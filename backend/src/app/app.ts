@@ -6,9 +6,22 @@ import { notFoundHandler } from './middlewares/not-found.middleware.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
 
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { setupSwagger } from '../shared/config/swagger.js';
 
 const app = express();
+
+// Apply CORS allowing frontend (credentials true)
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+    ],
+    credentials: true,
+  }),
+);
 
 // Apply JSON body parsing middleware
 app.use(express.json());
