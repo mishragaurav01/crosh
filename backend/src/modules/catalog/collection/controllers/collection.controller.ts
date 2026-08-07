@@ -46,6 +46,20 @@ export class CollectionController {
     }
   }
 
+  static async getBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const service = new CollectionService();
+      const result = await service.getCollectionBySlug(req.params.slug as string);
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async update(
     req: Request,
     res: Response,

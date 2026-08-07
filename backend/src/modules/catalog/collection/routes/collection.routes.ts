@@ -49,6 +49,26 @@ collectionRoutes.get(
 
 /**
  * @swagger
+ * /collections/slug/{slug}:
+ *   get:
+ *     summary: Get collection by slug
+ *     tags: [Catalog - Collection]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Collection found
+ *       404:
+ *         description: Collection not found
+ */
+collectionRoutes.get('/slug/:slug', CollectionController.getBySlug);
+
+/**
+ * @swagger
  * /collections:
  *   post:
  *     summary: Create a new collection
