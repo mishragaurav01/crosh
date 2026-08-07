@@ -1,0 +1,164 @@
+{
+    "info": {
+        "name": "Crosh Catalog Commerce (Variants, Inventory, Pricing)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Variants",
+            "item": [
+                {
+                    "name": "Create Variant",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/products/{{product_id}}/variants",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "{{product_id}}",
+                                "variants"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\\n  \\"sku\\": \\"VAR-RED-M\\",\\n  \\"attributes\\": { \\"color\\": \\"Red\\", \\"size\\": \\"M\\" }\\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Variants by Product",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/products/{{product_id}}/variants",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "{{product_id}}",
+                                "variants"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Inventory",
+            "item": [
+                {
+                    "name": "Add Stock",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/inventory/add",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "inventory",
+                                "add"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\\n  \\"variantId\\": \\"{
+                                {variant_id
+                                }
+                            }\\",\\n  \\"amount\\": 50\\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Inventory",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/inventory/{{variant_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "inventory",
+                                "{{variant_id}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Pricing",
+            "item": [
+                {
+                    "name": "Set Price",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/pricing",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "pricing"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\\n  \\"variantId\\": \\"{
+                                {variant_id
+                                }
+                            }\\",\\n  \\"currency\\": \\"INR\\",\\n  \\"basePrice\\": 1500,\\n  \\"salePrice\\": 1200\\n}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
