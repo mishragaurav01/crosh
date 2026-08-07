@@ -1,0 +1,113 @@
+{
+    "info": {
+        "name": "Crosh Catalog Discovery API",
+        "description": "Image management, Search, and SEO.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000/api/v1",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Images",
+            "item": [
+                {
+                    "name": "Get Product Images",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/:productId/images",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":productId",
+                                "images"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "<YOUR_PRODUCT_ID>"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Image",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/images/:imageId",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "images",
+                                ":imageId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "imageId",
+                                    "value": "<YOUR_IMAGE_ID>"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Search & Discovery",
+            "item": [
+                {
+                    "name": "Search Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/search?q=shirt",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "shirt"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Featured",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/featured",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "featured"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

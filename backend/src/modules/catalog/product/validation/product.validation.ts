@@ -18,6 +18,16 @@ export const createProductSchema = z.object({
         title: z.string().optional(),
         description: z.string().optional(),
         keywords: z.array(z.string()).optional(),
+        canonicalUrl: z.string().url().optional(),
+        openGraph: z
+          .object({
+            title: z.string().optional(),
+            description: z.string().optional(),
+            image: z.string().url().optional(),
+            url: z.string().url().optional(),
+          })
+          .optional(),
+        jsonLd: z.string().optional(),
       })
       .optional(),
   }),
@@ -44,6 +54,16 @@ export const updateProductSchema = z.object({
         title: z.string().optional(),
         description: z.string().optional(),
         keywords: z.array(z.string()).optional(),
+        canonicalUrl: z.string().url().optional(),
+        openGraph: z
+          .object({
+            title: z.string().optional(),
+            description: z.string().optional(),
+            image: z.string().url().optional(),
+            url: z.string().url().optional(),
+          })
+          .optional(),
+        jsonLd: z.string().optional(),
       })
       .optional(),
   }),
