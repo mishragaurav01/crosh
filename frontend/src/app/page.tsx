@@ -43,7 +43,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {products?.slice(0, 4).map((p: any) => (
             <Link key={p.id} href={`/products/${p.slug}`} className="block bg-white border border-gray-100 p-4 rounded-xl hover:shadow-xl transition group">
-              <div className="h-48 bg-gray-100 rounded-lg mb-4 flex justify-center items-center text-sm text-gray-400">Product Image</div>
+              <img src={p.images?.[0]?.url || 'https://placehold.co/600x600/png?text=New+Arrival'} alt={p.name} className="w-full h-48 object-cover rounded-lg mb-4" />
               <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition">{p.name}</h3>
               <p className="text-xs text-gray-500 mt-1 line-clamp-1">{p.description}</p>
             </Link>
