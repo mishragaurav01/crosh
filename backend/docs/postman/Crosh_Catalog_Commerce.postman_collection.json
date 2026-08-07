@@ -1,0 +1,162 @@
+{
+    "info": {
+        "name": "Crosh Catalog Commerce API",
+        "description": "Endpoints to manage variants, inventory, and pricing for Crosh ERP.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000/api/v1",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Variants",
+            "item": [
+                {
+                    "name": "Create Variant",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sku\": \"TSHIRT-RED-M\",\n  \"attributes\": {\n    \"color\": \"Red\",\n    \"size\": \"M\"\n  },\n  \"status\": \"Active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/:productId/variants",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":productId",
+                                "variants"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "<YOUR_PRODUCT_ID>"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Variants by Product",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/:productId/variants",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":productId",
+                                "variants"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "<YOUR_PRODUCT_ID>"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Inventory",
+            "item": [
+                {
+                    "name": "Get Inventory",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/:variantId",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                ":variantId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "variantId",
+                                    "value": "<YOUR_VARIANT_ID>"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Stock",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"variantId\": \"<YOUR_VARIANT_ID>\",\n  \"amount\": 50\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/add",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                "add"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Pricing",
+            "item": [
+                {
+                    "name": "Set Price",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"variantId\": \"<YOUR_VARIANT_ID>\",\n  \"currency\": \"INR\",\n  \"basePrice\": 1500,\n  \"salePrice\": 1200\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pricing",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pricing"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

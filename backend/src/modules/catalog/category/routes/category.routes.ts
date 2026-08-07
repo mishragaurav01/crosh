@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { CategoryController } from '../controllers/category.controller.js';
 import { validateRequest } from '../../../../app/middlewares/validate.middleware.js';
 import { authenticate } from '../../../../app/middlewares/auth/authenticate.js';
-import { authorize } from '../../../../app/middlewares/auth/authorize.js';
+import { requireRole } from '../../../../app/middlewares/auth/require-role.js';
 import {
-    createCategorySchema,
-    updateCategorySchema,
-    categoryIdSchema
+  createCategorySchema,
+  updateCategorySchema,
+  categoryIdSchema,
 } from '../validation/category.validation.js';
 
 const categoryRoutes = Router();
@@ -41,7 +41,11 @@ categoryRoutes.get('/', CategoryController.getAll);
  *       404:
  *         description: Category not found
  */
-categoryRoutes.get('/:id', validateRequest(categoryIdSchema), CategoryController.getById);
+categoryRoutes.get(
+  '/:id',
+  validateRequest(categoryIdSchema),
+  CategoryController.getById,
+);
 
 /**
  * @swagger
@@ -68,7 +72,13 @@ categoryRoutes.get('/:id', validateRequest(categoryIdSchema), CategoryController
  *       201:
  *         description: Category created
  */
-categoryRoutes.post('/', authenticate, authorize('Admin'), validateRequest(createCategorySchema), CategoryController.create);
+categoryRoutes.post(
+  '/',
+  authenticate,
+  requireRole('Admin'),
+  validateRequest(createCategorySchema),
+  CategoryController.create,
+);
 
 /**
  * @swagger
@@ -98,7 +108,13 @@ categoryRoutes.post('/', authenticate, authorize('Admin'), validateRequest(creat
  *       200:
  *         description: Category updated
  */
-categoryRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest(updateCategorySchema), CategoryController.update);
+categoryRoutes.patch(
+  '/:id',
+  authenticate,
+  requireRole('Admin'),
+  validateRequest(updateCategorySchema),
+  CategoryController.update,
+);
 
 /**
  * @swagger
@@ -119,6 +135,12 @@ categoryRoutes.patch('/:id', authenticate, authorize('Admin'), validateRequest(u
  *       200:
  *         description: Category deleted
  */
-categoryRoutes.delete('/:id', authenticate, authorize('Admin'), validateRequest(categoryIdSchema), CategoryController.delete);
+categoryRoutes.delete(
+  '/:id',
+  authenticate,
+  requireRole('Admin'),
+  validateRequest(categoryIdSchema),
+  CategoryController.delete,
+);
 
 export { categoryRoutes };

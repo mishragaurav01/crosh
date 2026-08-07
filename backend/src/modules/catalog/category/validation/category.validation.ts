@@ -8,12 +8,14 @@ export const createCategorySchema = z.object({
     image: z.string().url('Must be a valid URL').optional().or(z.literal('')),
     isActive: z.boolean().optional(),
     sortOrder: z.number().int().optional(),
-    seo: z.object({
-      title: z.string().optional(),
-      description: z.string().optional(),
-      keywords: z.array(z.string()).optional()
-    }).optional()
-  })
+    seo: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        keywords: z.array(z.string()).optional(),
+      })
+      .optional(),
+  }),
 });
 
 export const updateCategorySchema = z.object({
@@ -24,19 +26,21 @@ export const updateCategorySchema = z.object({
     image: z.string().url().optional().or(z.literal('')),
     isActive: z.boolean().optional(),
     sortOrder: z.number().int().optional(),
-    seo: z.object({
-      title: z.string().optional(),
-      description: z.string().optional(),
-      keywords: z.array(z.string()).optional()
-    }).optional()
+    seo: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        keywords: z.array(z.string()).optional(),
+      })
+      .optional(),
   }),
   params: z.object({
-    id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid ID')
-  })
+    id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid ID'),
+  }),
 });
 
 export const categoryIdSchema = z.object({
   params: z.object({
-    id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid ID')
-  })
+    id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid ID'),
+  }),
 });

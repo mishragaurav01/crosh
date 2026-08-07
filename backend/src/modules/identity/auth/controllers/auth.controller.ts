@@ -82,6 +82,7 @@ export class AuthController {
         success: true,
         data: {
           user: loginResponse.user,
+          accessToken: loginResponse.accessToken,
         },
       });
     } catch (error) {
