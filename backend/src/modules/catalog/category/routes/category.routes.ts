@@ -49,6 +49,26 @@ categoryRoutes.get(
 
 /**
  * @swagger
+ * /categories/slug/{slug}:
+ *   get:
+ *     summary: Get category by slug
+ *     tags: [Catalog - Category]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Category found
+ *       404:
+ *         description: Category not found
+ */
+categoryRoutes.get('/slug/:slug', CategoryController.getBySlug);
+
+/**
+ * @swagger
  * /categories:
  *   post:
  *     summary: Create a new category

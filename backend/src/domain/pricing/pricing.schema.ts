@@ -26,17 +26,13 @@ const priceSchema = new Schema<PriceDocument>(
 priceSchema.index({ variantId: 1, currency: 1 }, { unique: true });
 
 // Validate business logic
-priceSchema.pre('save', function (next: any) {
+priceSchema.pre('save', async function () {
   if (this.salePrice !== undefined && this.salePrice > this.basePrice) {
-    // @ts-ignore
-    return next(new Error('Sale price cannot be greater than base price'));
+    throw new Error('Sale price cannot be greater than base price');
   }
   if (this.costPrice !== undefined && this.costPrice < 0) {
-    // @ts-ignore
-    return next(new Error('Cost price cannot be negative'));
+    throw new Error('Cost price cannot be negative');
   }
-  // @ts-ignore
-  next();
 });
 
 export const PriceModel = mongoose.model<PriceDocument>('Price', priceSchema);

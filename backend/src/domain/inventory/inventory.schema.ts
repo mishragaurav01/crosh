@@ -21,17 +21,14 @@ const inventorySchema = new Schema<InventoryDocument>(
 );
 
 // Pre-save hook to ensure available quantity relates to quantity and reserved
-inventorySchema.pre('save', function (next: any) {
+inventorySchema.pre('save', async function () {
   const doc = this as unknown as InventoryDocument;
   if (doc.isModified('quantity') || doc.isModified('reservedQuantity')) {
     doc.availableQuantity = doc.quantity - doc.reservedQuantity;
   }
   if (doc.availableQuantity < 0) {
-    // @ts-ignore
-    return next(new Error('Available quantity cannot be negative'));
+    throw new Error('Available quantity cannot be negative');
   }
-  // @ts-ignore
-  next();
 });
 
 export const InventoryModel = mongoose.model<InventoryDocument>(

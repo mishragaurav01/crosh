@@ -25,6 +25,12 @@ export class CategoryService {
     return CategoryMapper.toResponse(category);
   }
 
+  async getCategoryBySlug(slug: string): Promise<CategoryResponse> {
+    const category = await this.repository.findBySlug(slug);
+    if (!category) throw new NotFoundError('Category not found');
+    return CategoryMapper.toResponse(category);
+  }
+
   async getCategories(activeOnly = false): Promise<CategoryResponse[]> {
     const query = activeOnly ? { isActive: true } : {};
     const categories = await this.repository.findAll(query);

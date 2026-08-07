@@ -25,6 +25,12 @@ export class CollectionService {
     return CollectionMapper.toResponse(collection);
   }
 
+  async getCollectionBySlug(slug: string): Promise<CollectionResponse> {
+    const collection = await this.repository.findBySlug(slug);
+    if (!collection) throw new NotFoundError('Collection not found');
+    return CollectionMapper.toResponse(collection);
+  }
+
   async getCollections(activeOnly = false): Promise<CollectionResponse[]> {
     const query = activeOnly ? { isActive: true } : {};
     const collections = await this.repository.findAll(query);

@@ -47,6 +47,20 @@ export class CategoryController {
     }
   }
 
+  static async getBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const service = new CategoryService();
+      const result = await service.getCategoryBySlug(req.params.slug as string);
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async update(
     req: Request,
     res: Response,
