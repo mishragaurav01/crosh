@@ -41,6 +41,19 @@ export const globalErrorHandler = (
     return;
   }
 
+  // Handle Mongoose Invalid ObjectId errors
+  if (
+    err &&
+    typeof err === 'object' &&
+    'name' in err &&
+    err.name === 'CastError'
+  ) {
+    res
+      .status(400)
+      .json({ success: false, message: 'Invalid ID format provided' });
+    return;
+  }
+
   logger.error(err);
   res.status(500).json({
     success: false,

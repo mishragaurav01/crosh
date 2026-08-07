@@ -1,8 +1,16 @@
 {
     "info": {
-        "name": "Crosh Catalog Commerce (Variants, Inventory, Pricing)",
+        "name": "Crosh Catalog Commerce API",
+        "description": "Endpoints to manage variants, inventory, and pricing for Crosh ERP.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000/api/v1",
+            "type": "string"
+        }
+    ],
     "item": [
         {
             "name": "Variants",
@@ -13,30 +21,30 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}"
-                            },
-                            {
                                 "key": "Content-Type",
                                 "value": "application/json"
                             }
                         ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/products/{{product_id}}/variants",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "{{product_id}}",
-                                "variants"
-                            ]
-                        },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\\n  \\"sku\\": \\"VAR-RED-M\\",\\n  \\"attributes\\": { \\"color\\": \\"Red\\", \\"size\\": \\"M\\" }\\n}"
+                            "raw": "{\n  \"sku\": \"TSHIRT-RED-M\",\n  \"attributes\": {\n    \"color\": \"Red\",\n    \"size\": \"M\"\n  },\n  \"status\": \"Active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/:productId/variants",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":productId",
+                                "variants"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "<YOUR_PRODUCT_ID>"
+                                }
+                            ]
                         }
                     }
                 },
@@ -46,16 +54,20 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "{{base_url}}/api/v1/products/{{product_id}}/variants",
+                            "raw": "{{baseUrl}}/products/:productId/variants",
                             "host": [
-                                "{{base_url}}"
+                                "{{baseUrl}}"
                             ],
                             "path": [
-                                "api",
-                                "v1",
                                 "products",
-                                "{{product_id}}",
+                                ":productId",
                                 "variants"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "<YOUR_PRODUCT_ID>"
+                                }
                             ]
                         }
                     }
@@ -66,55 +78,50 @@
             "name": "Inventory",
             "item": [
                 {
-                    "name": "Add Stock",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/inventory/add",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "v1",
-                                "inventory",
-                                "add"
-                            ]
-                        },
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\\n  \\"variantId\\": \\"{
-                                {variant_id
-                                }
-                            }\\",\\n  \\"amount\\": 50\\n}"
-                        }
-                    }
-                },
-                {
                     "name": "Get Inventory",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "{{base_url}}/api/v1/inventory/{{variant_id}}",
+                            "raw": "{{baseUrl}}/inventory/:variantId",
                             "host": [
-                                "{{base_url}}"
+                                "{{baseUrl}}"
                             ],
                             "path": [
-                                "api",
-                                "v1",
                                 "inventory",
-                                "{{variant_id}}"
+                                ":variantId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "variantId",
+                                    "value": "<YOUR_VARIANT_ID>"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Stock",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"variantId\": \"<YOUR_VARIANT_ID>\",\n  \"amount\": 50\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/add",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                "add"
                             ]
                         }
                     }
@@ -130,31 +137,22 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}"
-                            },
-                            {
                                 "key": "Content-Type",
                                 "value": "application/json"
                             }
                         ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/pricing",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "v1",
-                                "pricing"
-                            ]
-                        },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\\n  \\"variantId\\": \\"{
-                                {variant_id
-                                }
-                            }\\",\\n  \\"currency\\": \\"INR\\",\\n  \\"basePrice\\": 1500,\\n  \\"salePrice\\": 1200\\n}"
+                            "raw": "{\n  \"variantId\": \"<YOUR_VARIANT_ID>\",\n  \"currency\": \"INR\",\n  \"basePrice\": 1500,\n  \"salePrice\": 1200\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pricing",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pricing"
+                            ]
                         }
                     }
                 }
