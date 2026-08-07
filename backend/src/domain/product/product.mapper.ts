@@ -2,31 +2,31 @@ import type { ProductDocument, ProductResponse } from './product.types.js';
 
 export class ProductMapper {
   static toResponse(doc: ProductDocument): ProductResponse {
-    let categoryMap: any = doc.category;
+    let categoryMap: Record<string, unknown> | string = doc.category;
     if (
       doc.category &&
       typeof doc.category === 'object' &&
       '_id' in doc.category
     ) {
       categoryMap = {
-        id: (doc.category as any)._id.toString(),
-        name: (doc.category as any).name,
-        slug: (doc.category as any).slug,
+        id: (doc.category as Record<string, unknown>)._id.toString(),
+        name: (doc.category as Record<string, unknown>).name,
+        slug: (doc.category as Record<string, unknown>).slug,
       };
     } else if (doc.category) {
       categoryMap = doc.category.toString();
     }
 
-    let collectionMap: any = doc.collectionAssigned;
+    let collectionMap: Record<string, unknown> | string = doc.collectionAssigned;
     if (
       doc.collectionAssigned &&
       typeof doc.collectionAssigned === 'object' &&
       '_id' in doc.collectionAssigned
     ) {
       collectionMap = {
-        id: (doc.collectionAssigned as any)._id.toString(),
-        name: (doc.collectionAssigned as any).name,
-        slug: (doc.collectionAssigned as any).slug,
+        id: (doc.collectionAssigned as Record<string, unknown>)._id.toString(),
+        name: (doc.collectionAssigned as Record<string, unknown>).name,
+        slug: (doc.collectionAssigned as Record<string, unknown>).slug,
       };
     } else if (doc.collectionAssigned) {
       collectionMap = doc.collectionAssigned.toString();

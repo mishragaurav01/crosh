@@ -14,7 +14,7 @@ describe('CategoryService', () => {
     vi.clearAllMocks();
     mockRepo = new CategoryRepository() as vi.Mocked<CategoryRepository>;
     service = new CategoryService();
-    (service as any).repository = mockRepo;
+    (service as never).repository = mockRepo;
   });
 
   it('should create category successfully', async () => {
@@ -30,22 +30,22 @@ describe('CategoryService', () => {
       ...mockData,
       createdAt: new Date(),
       updatedAt: new Date(),
-    } as any);
+    } as never);
 
-    const result = await service.createCategory(mockData as any);
+    const result = await service.createCategory(mockData as never);
     expect(result.id).toBe('123');
     expect(result.slug).toBe('test');
   });
 
   it('should throw conflict if slug exists', async () => {
-    mockRepo.findBySlug.mockResolvedValue({ _id: '123' } as any);
+    mockRepo.findBySlug.mockResolvedValue({ _id: '123' } as never);
     await expect(
       service.createCategory({
         name: 'T',
         slug: 't',
         isActive: true,
         sortOrder: 0,
-      } as any),
+      } as never),
     ).rejects.toThrow(ConflictError);
   });
 });

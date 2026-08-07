@@ -13,21 +13,21 @@ export class PricingService {
     return prices.map(PriceMapper.toResponse);
   }
 
-  async setPrice(variantId: string, data: any): Promise<PriceResponse> {
+  async setPrice(variantId: string, data: import("../../domain/pricing/pricing.types.js").Price): Promise<PriceResponse> {
     // Business Rule: One active price per variant per currency
     // Current simplistic implementation: unique index enforced in mongo
     try {
       const price = await this.priceRepository.create({ ...data, variantId });
       return PriceMapper.toResponse(price);
-    } catch (error: any) {
-      if (error.code === 11000) {
+    } catch (error: unknown) {
+      if ((error as Record<string, unknown>).code === 11000) {
         throw new ValidationError('Validation Error');
       }
       throw error;
     }
   }
 
-  async updatePrice(id: string, data: any): Promise<PriceResponse> {
+  async updatePrice(id: string, data: Partial<import("../../domain/pricing/pricing.types.js").Price>): Promise<PriceResponse> {
     const price = await this.priceRepository.findById(id);
     if (!price) throw new NotFoundError('Not Found');
 

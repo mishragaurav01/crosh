@@ -4,8 +4,8 @@ import { ValidationError } from '../../shared/errors/index.js';
 
 describe('Inventory Calculations', () => {
   let service: InventoryService;
-  let mockRepo: any;
-  let fakeInventory: any;
+  let mockRepo: Record<string, unknown>;
+  let fakeInventory: Record<string, unknown>;
 
   beforeEach(() => {
     fakeInventory = {
@@ -24,7 +24,7 @@ describe('Inventory Calculations', () => {
       findByVariantId: async () => fakeInventory,
     };
 
-    service = new InventoryService(mockRepo as any);
+    service = new InventoryService(mockRepo as unknown as import("../../app/repositories/inventory.repository.js").InventoryRepository);
   });
 
   it('should correctly add stock', async () => {
