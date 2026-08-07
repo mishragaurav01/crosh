@@ -1,7 +1,7 @@
 import { CartRepository } from '../../app/repositories/cart.repository.js';
 import { ProductRepository } from '../../app/repositories/product.repository.js';
 import { VariantRepository } from '../../app/repositories/variant.repository.js';
-import { PricingRepository } from '../../app/repositories/pricing.repository.js';
+import { PriceRepository } from '../../app/repositories/pricing.repository.js';
 import { InventoryRepository } from '../../app/repositories/inventory.repository.js';
 import { CouponService } from '../coupon/coupon.service.js';
 import { CartMapper, type CartResponse, type CartItemResponse, type CartDocument } from '../../domain/cart/index.js';
@@ -13,7 +13,7 @@ export class CartService {
         private cartRepo = new CartRepository(),
         private productRepo = new ProductRepository(),
         private variantRepo = new VariantRepository(),
-        private pricingRepo = new PricingRepository(),
+        private priceRepo = new PriceRepository(),
         private inventoryRepo = new InventoryRepository(),
         private couponService = new CouponService()
     ) { }
@@ -42,7 +42,7 @@ export class CartService {
 
             let price = 0;
             if (variant) {
-                const pricing = await this.pricingRepo.findByVariantId(item.variantId.toString());
+                const pricing = await this.priceRepo.findByVariantIdAndCurrency(item.variantId.toString(), 'INR');
                 if (pricing) {
                     price = pricing.salePrice ?? pricing.basePrice;
                 }

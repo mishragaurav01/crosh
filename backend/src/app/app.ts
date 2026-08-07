@@ -38,8 +38,15 @@ import { productRoutes } from '../modules/catalog/product/routes/product.routes.
 import { variantRoutes } from '../modules/catalog/variant/routes/variant.routes.js';
 import { inventoryRoutes } from '../modules/catalog/inventory/routes/inventory.routes.js';
 import { pricingRoutes } from '../modules/catalog/pricing/routes/pricing.routes.js';
-
 import { imageRoutes } from '../modules/catalog/image/routes/image.routes.js';
+
+import { wishlistRoutes } from '../modules/shopping/wishlist/routes/wishlist.routes.js';
+import { cartRoutes } from '../modules/shopping/cart/routes/cart.routes.js';
+import { couponRoutes } from '../modules/shopping/coupon/routes/coupon.routes.js';
+
+import { addressRoutes } from '../modules/order-management/address/routes/address.routes.js';
+import { checkoutRoutes } from '../modules/order-management/checkout/routes/checkout.routes.js';
+import { orderRoutes } from '../modules/order-management/order/routes/order.routes.js';
 
 // Register routes
 app.use('/', healthRoute);
@@ -52,6 +59,14 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1', variantRoutes); // Since variant routes bind to both /products/:id/variants and /variants/:id
 app.use('/api/v1/inventory', inventoryRoutes);
 app.use('/api/v1/pricing', pricingRoutes);
+
+app.use('/api/v1/wishlist', wishlistRoutes);
+app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/coupons', couponRoutes);
+
+app.use('/api/v1/addresses', addressRoutes);
+app.use('/api/v1/checkout', checkoutRoutes);
+app.use('/api/v1/orders', orderRoutes);
 
 // 404 Handler (must be registered after all functional routes)
 app.use(notFoundHandler);
