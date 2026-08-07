@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { Mocked } from 'vitest';
 import { CategoryService } from '../../application/category/category.service.js';
 import { CategoryRepository } from '../../app/repositories/category.repository.js';
 import { ConflictError, NotFoundError } from '../../shared/errors/index.js';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ProductDocument, ProductResponse } from './product.types.js';
 
 export class ProductMapper {
