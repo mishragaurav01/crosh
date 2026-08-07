@@ -5,7 +5,7 @@ import { AddressRepository } from '../../app/repositories/address.repository.js'
 import { CouponRepository } from '../../app/repositories/coupon.repository.js';
 import { OrderMapper, type OrderResponse } from '../../domain/order/index.js';
 import { ValidationError, NotFoundError } from '../../shared/errors/index.js';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 export class OrderService {
     constructor(
@@ -27,56 +27,65 @@ export class OrderService {
             throw new ValidationError('Cart is empty');
         }
 
-        // 1. Snapshot Cart & Validate Inventory
-        const orderItems = [];
-        for (const item of cart.items) {
-            const inventory = await this.inventoryRepo.findByVariantId(item.variantId);
-            if (!inventory) throw new ValidationError(`Inventory unavailable for variant ${item.variant?._id}`);
+        const session = await mongoose.startSession();
+        let order: any;
 
-            if (item.quantity > inventory.availableQuantity) {
-                throw new ValidationError(`Insufficient stock for ${item.product?.name}`);
-            }
+        try {
+            await session.withTransaction(async () => {
+                const orderItems = [];
 
-            orderItems.push({
-                productId: new Types.ObjectId(item.productId),
-                variantId: new Types.ObjectId(item.variantId),
-                sku: item.variant?.sku || 'UNKNOWN',
-                name: item.product?.name || 'UNKNOWN',
-                quantity: item.quantity,
-                price: item.price,
-                total: item.total
+                for (const item of cart.items) {
+                    const inventory = await this.inventoryRepo.findByVariantId(item.variantId);
+                    if (!inventory) throw new ValidationError(`Inventory unavailable for variant ${item.variantId}`);
+
+                    if (item.quantity > inventory.availableQuantity) {
+                        throw new ValidationError(`Insufficient stock for product ${item.productId}`);
+                    }
+
+                    orderItems.push({
+                        productId: new Types.ObjectId(item.productId),
+                        variantId: new Types.ObjectId(item.variantId),
+                        sku: item.variant?.sku || 'UNKNOWN',
+                        name: item.product?.name || 'UNKNOWN',
+                        quantity: item.quantity,
+                        price: item.price,
+                        total: item.total
+                    });
+
+                    // Deduct inside transaction
+                    inventory.availableQuantity -= item.quantity;
+                    await inventory.save({ session });
+                }
+
+                // Create Order inside transaction
+                order = await this.orderRepo.create([{
+                    userId: new Types.ObjectId(userId),
+                    addressId: new Types.ObjectId(addressId),
+                    items: orderItems,
+                    couponId: cart.coupon ? new Types.ObjectId(cart.coupon.id) : undefined,
+                    subTotal: cart.subTotal,
+                    discountAmount: cart.discountAmount,
+                    total: cart.total,
+                    status: 'Pending',
+                    statusHistory: [{ status: 'Pending', timestamp: new Date() }]
+                }], { session });
+
+                if (Array.isArray(order)) order = order[0];
+
+                if (cart.coupon) {
+                    await this.couponRepo.incrementUsage(cart.coupon.id, session);
+                }
+
+                const actualCart = await mongoose.model('Cart').findById(cart.id);
+                if (actualCart) {
+                    actualCart.items = [] as any;
+                    actualCart.couponId = undefined;
+                    await actualCart.save({ session });
+                }
             });
+        } finally {
+            await session.endSession();
         }
-
-        // 2. Lock Inventory (Deduct stock) - Basic pessimistic transaction alternative
-        // Note: In real production, this requires a DB transaction session to rollback on failure
-        for (const item of orderItems) {
-            const inventory = await this.inventoryRepo.findByVariantId(item.variantId.toString());
-            if (inventory) {
-                inventory.availableQuantity -= item.quantity;
-                await inventory.save();
-            }
-        }
-
-        // 3. Create Order
-        const order = await this.orderRepo.create({
-            userId: new Types.ObjectId(userId),
-            addressId: new Types.ObjectId(addressId),
-            items: orderItems,
-            couponId: cart.coupon ? new Types.ObjectId(cart.coupon.id) : undefined,
-            subTotal: cart.subTotal,
-            discountAmount: cart.discountAmount,
-            total: cart.total,
-            status: 'Pending',
-            statusHistory: [{ status: 'Pending', timestamp: new Date() }]
-        });
-
-        if (cart.coupon) {
-            await this.couponRepo.incrementUsage(cart.coupon.id);
-        }
-
-        // 4. Empty Cart
-        await this.cartService.clearCart(userId);
 
         return OrderMapper.toResponse(order);
     }

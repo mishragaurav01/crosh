@@ -45,6 +45,8 @@ const swaggerOptions: swaggerJSDoc.Options = {
     './src/modules/identity/auth/routes/*.ts',
     './src/modules/identity/auth/controllers/*.ts',
     './src/modules/catalog/*/routes/*.ts',
+    './src/modules/shopping/*/routes/*.ts',
+    './src/modules/order-management/*/routes/*.ts'
   ], // Path to annotations
 };
 
