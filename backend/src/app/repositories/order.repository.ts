@@ -2,8 +2,10 @@ import { OrderModel } from '../../domain/order/index.js';
 import type { OrderDocument } from '../../domain/order/index.js';
 
 export class OrderRepository {
-    async create(data: any): Promise<OrderDocument> {
-        return OrderModel.create(data);
+    async create(data: any, options?: any): Promise<OrderDocument> {
+        const arr = Array.isArray(data) ? data : [data];
+        const created = await OrderModel.create(arr, options);
+        return (Array.isArray(created) ? created[0] : created) as any;
     }
 
     async findById(id: string): Promise<OrderDocument | null> {

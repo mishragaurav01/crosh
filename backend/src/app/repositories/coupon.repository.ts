@@ -18,8 +18,8 @@ export class CouponRepository {
         return CouponModel.findByIdAndUpdate(id, { $set: updates }, { new: true }).exec();
     }
 
-    async incrementUsage(id: string): Promise<void> {
-        await CouponModel.findByIdAndUpdate(id, { $inc: { usedCount: 1 } }).exec();
+    async incrementUsage(id: string, options?: any): Promise<void> {
+        await CouponModel.findByIdAndUpdate(id, { $inc: { usedCount: 1 } }, options).exec();
     }
 
     async delete(id: string): Promise<void> {

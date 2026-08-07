@@ -1,32 +1,52 @@
+
+/**
+ * @swagger
+ * /api/v1/cart:
+ *   get:
+ *     summary: Get cart
+ *     tags: [Cart]
+ *   post:
+ *     summary: Add item to cart
+ *     tags: [Cart]
+ *   delete:
+ *     summary: Clear cart
+ *     tags: [Cart]
+ * /api/v1/cart/items/{itemId}:
+ *   patch:
+ *     summary: Update cart item quantity
+ *     tags: [Cart]
+ *   delete:
+ *     summary: Remove cart item
+ *     tags: [Cart]
+ * /api/v1/cart/apply-coupon:
+ *   post:
+ *     summary: Apply coupon
+ *     tags: [Cart]
+ * /api/v1/cart/remove-coupon:
+ *   post:
+ *     summary: Remove coupon
+ *     tags: [Cart]
+ * /api/v1/cart/merge:
+ *   post:
+ *     summary: Merge guest cart
+ *     tags: [Cart]
+ */
 import { Router } from 'express';
 import { CartController } from '../controllers/cart.controller.js';
 import { authenticate } from '../../../../app/middlewares/auth/authenticate.js';
-
-// Note: Cart routes can conditionally use authenticate. 
-// We will simply attach user object if token exists without throwing via an "optional auth" middleware
-// But the prompt implies authenticated users mostly, except `merge` which explicitly uses guest merge logic.
-// For brevity, we'll assume `authenticate` allows pass-through if no token and handles parsing if there is.
-// I will wrap it to let Guest IDs pass.
-
-import type { Request, Response, NextFunction } from 'express';
-const optionalAuth = (req: Request, res: Response, next: NextFunction) => {
-    authenticate(req, res, (err) => {
-        // ignore error if unauthorized, but fail on invalid
-        if (err && (err as any).message === 'Token missing') return next();
-        if (err) return next();
-        next();
-    });
-};
+import { optionalAuth } from '../../../../app/middlewares/auth/optional-auth.js';
+import { validateRequest } from '../../../../app/middlewares/validate.middleware.js';
+import { addItemSchema, updateItemSchema, removeItemSchema, applyCouponSchema } from '../validation/cart.validation.js';
 
 const router = Router();
 
 router.get('/', optionalAuth, CartController.getCart);
-router.post('/', optionalAuth, CartController.addItem);
-router.patch('/items/:itemId', optionalAuth, CartController.updateItem);
-router.delete('/items/:itemId', optionalAuth, CartController.removeItem);
+router.post('/', optionalAuth, validateRequest(addItemSchema), CartController.addItem);
+router.patch('/items/:itemId', optionalAuth, validateRequest(updateItemSchema), CartController.updateItem);
+router.delete('/items/:itemId', optionalAuth, validateRequest(removeItemSchema), CartController.removeItem);
 router.delete('/', optionalAuth, CartController.clearCart);
 
-router.post('/apply-coupon', optionalAuth, CartController.applyCoupon);
+router.post('/apply-coupon', optionalAuth, validateRequest(applyCouponSchema), CartController.applyCoupon);
 router.post('/remove-coupon', optionalAuth, CartController.removeCoupon);
 
 // Merge requires Auth
