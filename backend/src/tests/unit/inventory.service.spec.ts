@@ -24,7 +24,9 @@ describe('Inventory Calculations', () => {
       findByVariantId: async () => fakeInventory,
     };
 
-    service = new InventoryService(mockRepo as unknown as import("../../app/repositories/inventory.repository.js").InventoryRepository);
+    service = new InventoryService(
+      mockRepo as unknown as import('../../app/repositories/inventory.repository.js').InventoryRepository,
+    );
   });
 
   it('should correctly add stock', async () => {

@@ -66,6 +66,33 @@ export class ProductService {
     return products.map(ProductMapper.toResponse);
   }
 
+  async searchProducts(
+    query: string,
+    filters: Record<string, unknown>,
+    page = 1,
+    limit = 20,
+  ): Promise<{ data: ProductResponse[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const result = await this.repository.search(query, filters, {
+      skip,
+      limit,
+    });
+    return {
+      data: result.data.map(ProductMapper.toResponse),
+      total: result.total,
+    };
+  }
+
+  async getFeaturedProducts(): Promise<ProductResponse[]> {
+    const products = await this.repository.findFeatured();
+    return products.map(ProductMapper.toResponse);
+  }
+
+  async getNewArrivals(): Promise<ProductResponse[]> {
+    const products = await this.repository.findAll({ status: 'Active' }); // Wait findAll sorts by created desc
+    return products.slice(0, 10).map(ProductMapper.toResponse);
+  }
+
   async updateProduct(
     id: string,
     data: Partial<Product>,

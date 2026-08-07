@@ -11,7 +11,19 @@ export interface Product {
   collectionAssigned?: Types.ObjectId | string;
   status: ProductStatus;
   featured: boolean;
-  seo?: { title?: string; description?: string; keywords?: string[] };
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    canonicalUrl?: string;
+    openGraph?: {
+      title?: string;
+      description?: string;
+      image?: string;
+      url?: string;
+    };
+    jsonLd?: string;
+  };
 }
 
 export interface ProductDocument extends Document {
@@ -24,7 +36,19 @@ export interface ProductDocument extends Document {
   collectionAssigned?: Types.ObjectId | Record<string, unknown>;
   status: ProductStatus;
   featured: boolean;
-  seo?: { title?: string; description?: string; keywords?: string[] };
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    canonicalUrl?: string;
+    openGraph?: {
+      title?: string;
+      description?: string;
+      image?: string;
+      url?: string;
+    };
+    jsonLd?: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,11 +59,23 @@ export interface ProductResponse {
   slug: string;
   description?: string;
   shortDescription?: string;
-  category: Record<string, unknown>;
-  collectionAssigned?: Record<string, unknown>;
+  category: Record<string, unknown> | string;
+  collectionAssigned?: Record<string, unknown> | string;
   status: ProductStatus;
   featured: boolean;
-  seo?: { title?: string; description?: string; keywords?: string[] };
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    canonicalUrl?: string;
+    openGraph?: {
+      title?: string;
+      description?: string;
+      image?: string;
+      url?: string;
+    };
+    jsonLd?: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }

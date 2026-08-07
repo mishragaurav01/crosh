@@ -26,6 +26,51 @@ productRoutes.get('/', ProductController.getAll);
 
 /**
  * @swagger
+ * /products/search:
+ *   get:
+ *     summary: Search and filter products
+ *     tags: [Catalog - Product]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Search results
+ */
+productRoutes.get('/search', ProductController.search);
+
+/**
+ * @swagger
+ * /products/featured:
+ *   get:
+ *     summary: Get featured products
+ *     tags: [Catalog - Product]
+ *     responses:
+ *       200:
+ *         description: Featured products
+ */
+productRoutes.get('/featured', ProductController.getFeatured);
+
+/**
+ * @swagger
+ * /products/new-arrivals:
+ *   get:
+ *     summary: Get new arrival products
+ *     tags: [Catalog - Product]
+ *     responses:
+ *       200:
+ *         description: New arrivals
+ */
+productRoutes.get('/new-arrivals', ProductController.getNewArrivals);
+
+/**
+ * @swagger
  * /products/{id}:
  *   get:
  *     summary: Get product by ID

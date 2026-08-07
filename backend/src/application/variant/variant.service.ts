@@ -10,7 +10,10 @@ export class VariantService {
     private inventoryRepository: InventoryRepository = new InventoryRepository(),
   ) {}
 
-  async createVariant(productId: string, data: import("../../domain/variant/variant.types.js").Variant): Promise<VariantResponse> {
+  async createVariant(
+    productId: string,
+    data: import('../../domain/variant/variant.types.js').Variant,
+  ): Promise<VariantResponse> {
     const existingSku = await this.variantRepository.findBySku(data.sku);
     if (existingSku) {
       throw new ValidationError('Validation Error');
@@ -34,7 +37,10 @@ export class VariantService {
     return variants.map(VariantMapper.toResponse);
   }
 
-  async updateVariant(id: string, data: Partial<import("../../domain/variant/variant.types.js").Variant>): Promise<VariantResponse> {
+  async updateVariant(
+    id: string,
+    data: Partial<import('../../domain/variant/variant.types.js').Variant>,
+  ): Promise<VariantResponse> {
     if (data.sku) {
       const existingSku = await this.variantRepository.findBySku(data.sku);
       if (existingSku && existingSku._id.toString() !== id) {

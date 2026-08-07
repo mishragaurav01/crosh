@@ -39,8 +39,11 @@ import { variantRoutes } from '../modules/catalog/variant/routes/variant.routes.
 import { inventoryRoutes } from '../modules/catalog/inventory/routes/inventory.routes.js';
 import { pricingRoutes } from '../modules/catalog/pricing/routes/pricing.routes.js';
 
+import { imageRoutes } from '../modules/catalog/image/routes/image.routes.js';
+
 // Register routes
 app.use('/', healthRoute);
+app.use('/api/v1', imageRoutes); // Binds to both /images and /products/:id/images
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/categories', categoryRoutes);

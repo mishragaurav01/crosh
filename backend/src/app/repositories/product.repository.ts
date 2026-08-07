@@ -48,4 +48,40 @@ export class ProductRepository {
       { new: true },
     ).exec();
   }
+
+  async search(
+    queryText: string,
+    filters: Record<string, unknown> = {},
+    options: {
+      skip?: number;
+      limit?: number;
+      sort?: Record<string, 1 | -1>;
+    } = {},
+  ): Promise<{ data: ProductDocument[]; total: number }> {
+    const q: Record<string, unknown> = { ...filters, status: 'Active' };
+
+    if (queryText) {
+      q.$or = [
+        { name: { $regex: queryText, $options: 'i' } },
+        { slug: { $regex: queryText, $options: 'i' } },
+      ];
+    }
+
+    const count = await ProductModel.countDocuments(q);
+    const data = await ProductModel.find(q)
+      .populate('category collectionAssigned')
+      .sort(options.sort || { createdAt: -1 })
+      .skip(options.skip || 0)
+      .limit(options.limit || 20)
+      .exec();
+
+    return { data, total: count };
+  }
+
+  async findFeatured(): Promise<ProductDocument[]> {
+    return ProductModel.find({ featured: true, status: 'Active' })
+      .populate('category collectionAssigned')
+      .limit(10)
+      .exec();
+  }
 }
